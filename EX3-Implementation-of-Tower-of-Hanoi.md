@@ -1,51 +1,67 @@
-# EX3 Write a program to count the number of digits in an integer.
-## DATE:25-03-2026
-## AIM:
-To write a C program to implement Tower of Hanoi
+# EX3 - Implementation of Tower of Hanoi
+
+## DATE: 25-03-2026
+
+---
+
+## AIM:  
+To write a C program to implement Tower of Hanoi.
+
+---
 
 ## Algorithm
-1. Read the input number Take an integer num from the user.
-2. Convert the number to a non-negative value Use Math.abs(num) and store it in n to handle negative numbers.
-3. Check if the number is zero If n == 0, set digit count to 1 (since zero has one digit).
-4. Count digits for non-zero numbers Repeatedly divide n by 10 and increment the counter until n becomes 0.
-5. Display the digit count Output the total number of digits.
- 
+
+1. If there is only one disk, move it directly from source to destination.  
+2. Recursively move (n-1) disks from the source rod to the auxiliary rod.  
+3. Move the nth disk from the source rod to the destination rod.  
+4. Recursively move the (n-1) disks from the auxiliary rod to the destination rod.  
+5. Repeat the above steps until all disks are moved from the source to the destination.
+
+---
 
 ## Program:
-```
+
+```c
 /*
-Program to to count the number of digits in an integer
+Program to implement Tower of Hanoi
 Developed by: Saileshkumar A
-RegisterNumber: 212222230126
-import java.util.Scanner;
-
-public class CountDigits {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int num = sc.nextInt();
-
-        int count = 0;
-        int n = Math.abs(num); 
-
-        if (n == 0) {
-            count = 1; 
-        } else {
-            while (n > 0) {
-                n /= 10; 
-                count++;
-            }
-        }
-
-        System.out.println("Number of digits: " + count);
-    }
-}
+Register Number: 212222230126
 */
 
+#include <stdio.h>
+
+void towerOfHanoi(int n, char source, char destination, char auxiliary) {
+    if (n == 1) {
+        printf("Move disk 1 from %c to %c\n", source, destination);
+        return;
+    }
+    towerOfHanoi(n - 1, source, auxiliary, destination);
+    printf("Move disk %d from %c to %c\n", n, source, destination);
+    towerOfHanoi(n - 1, auxiliary, destination, source);
+}
+
+int main() {
+    int n;
+    printf("Enter number of disks: ");
+    scanf("%d", &n);
+    printf("The sequence of moves:\n");
+    towerOfHanoi(n, 'A', 'C', 'B'); // A = source, C = destination, B = auxiliary
+    return 0;
+}
+```
+## Output:
+```
+Enter number of disks: 3  
+The sequence of moves:  
+Move disk 1 from A to C  
+Move disk 2 from A to B  
+Move disk 1 from C to B  
+Move disk 3 from A to C  
+Move disk 1 from B to A  
+Move disk 2 from B to C  
+Move disk 1 from A to C  
+
 ```
 
-## Output:
-<img width="787" height="326" alt="image" src="https://github.com/user-attachments/assets/3e2ba5e9-06bf-4cbd-9bf8-2034190a11d4" />
-
-
 ## Result:
-Thus, the Java program to to count the number of digits in an integer is implemented successfully.
+Thus, the C program to implement Tower of Hanoi using recursion is implemented successfully.
