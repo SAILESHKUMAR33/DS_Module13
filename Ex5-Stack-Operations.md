@@ -1,77 +1,102 @@
-# Ex5 Count Inversions in an Array
-## DATE:25-03-2026
+# Ex5 - Stack Operations
+
+## DATE: 25-03-2026
+
+---
+
 ## AIM:
-To write a Java program  to Count the number of inversions in an array where inversion is defined as: arr[i] > arr[j] and i < j
+To write a C function to perform push and pop operations of the stack in the infix to postfix conversion.
+
+---
 
 ## Algorithm
-1. Read n and the array elements.
-2. Use merge sort to split the array into halves.
-3. Count inversions in the left half and right half.
-4. Merge the halves and count cross-inversions when right element < left element.
-5. Add all inversion counts and print the result.   
+
+1. Initialize an empty stack and an empty string for the postfix result.  
+2. Scan the infix expression from left to right.  
+3. If the character is an operand, append it directly to the postfix expression.  
+4. If the character is an operator, perform push or pop based on operator precedence:
+   - Pop operators from the stack to the postfix expression while the precedence of the current operator is less than or equal to the operator on the top of the stack.
+   - Push the current operator onto the stack.
+5. After scanning the expression, pop all remaining operators from the stack to the postfix expression.
+
+---
 
 ## Program:
-```
+
+```c
 /*
-Program toto Count the number of inversions in an array where inversion is defined as: arr[i] > arr[j] and i < j
+Program to perform push and pop operations of the stack in the infix to postfix conversion
 Developed by: Saileshkumar A
-RegisterNumber: 212222230126
-import java.util.Scanner;
+Register Number: 212222230126
+*/
 
-public class CountInversions {
-    public static int mergeSortAndCount(int[] arr, int left, int right) {
-        int count = 0;
-        if (left < right) {
-            int mid = (left + right) / 2;
-            count += mergeSortAndCount(arr, left, mid);
-            count += mergeSortAndCount(arr, mid + 1, right);
-            count += mergeAndCount(arr, left, mid, right);
-        }
-        return count;
-    }
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
 
-    private static int mergeAndCount(int[] arr, int left, int mid, int right) {
-        int[] leftArr = new int[mid - left + 1];
-        int[] rightArr = new int[right - mid];
+#define MAX 100
 
-        for (int i = 0; i < leftArr.length; i++) leftArr[i] = arr[left + i];
-        for (int i = 0; i < rightArr.length; i++) rightArr[i] = arr[mid + 1 + i];
+char stack[MAX];
+int top = -1;
 
-        int i = 0, j = 0, k = left, swaps = 0;
-
-        while (i < leftArr.length && j < rightArr.length) {
-            if (leftArr[i] <= rightArr[j]) {
-                arr[k++] = leftArr[i++];
-            } else {
-                arr[k++] = rightArr[j++];
-                swaps += (leftArr.length - i); // Count inversions
-                
-            }
-       
-        }
-
-        while (i < leftArr.length) arr[k++] = leftArr[i++];
-        while (j < rightArr.length) arr[k++] = rightArr[j++];
-
-        return swaps;
-    }
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int[] arr = new int[n];
-        for (int i = 0; i < n; i++) arr[i] = sc.nextInt();
-        System.out.println(mergeSortAndCount(arr, 0, n - 1));
-    }
+void push(char ch) {
+    stack[++top] = ch;
 }
 
+char pop() {
+    if (top == -1)
+        return -1;
+    return stack[top--];
+}
 
-*/
+int precedence(char op) {
+    if (op == '^')
+        return 3;
+    if (op == '*' || op == '/')
+        return 2;
+    if (op == '+' || op == '-')
+        return 1;
+    return 0;
+}
+
+void infixToPostfix(char* infix, char* postfix) {
+    int i, j = 0;
+    char ch;
+    for (i = 0; infix[i] != '\0'; i++) {
+        ch = infix[i];
+        if (isalnum(ch)) {
+            postfix[j++] = ch;
+        } else if (ch == '(') {
+            push(ch);
+        } else if (ch == ')') {
+            while (stack[top] != '(')
+                postfix[j++] = pop();
+            pop(); // remove '('
+        } else {
+            while (top != -1 && precedence(stack[top]) >= precedence(ch))
+                postfix[j++] = pop();
+            push(ch);
+        }
+    }
+    while (top != -1)
+        postfix[j++] = pop();
+    postfix[j] = '\0';
+}
+
+int main() {
+    char infix[MAX], postfix[MAX];
+    printf("Enter Infix Expression: ");
+    scanf("%s", infix);
+    infixToPostfix(infix, postfix);
+    printf("Postfix Expression: %s\n", postfix);
+    return 0;
+}
+~~~
 ```
-
 ## Output:
-<img width="396" height="303" alt="image" src="https://github.com/user-attachments/assets/ea99a1c6-7308-4776-bb6b-fe5f8af95651" />
-
-
+```
+Enter Infix Expression: (A+B)*C
+Postfix Expression: AB+C*
+```
 ## Result:
-Thus the Java program to to Count the number of inversions in an array where inversion is defined as: arr[i] > arr[j] and i < jis implemented successfully.
+Thus, the C program to perform push and pop operations of the stack in the infix to postfix conversion is implemented successfully.
