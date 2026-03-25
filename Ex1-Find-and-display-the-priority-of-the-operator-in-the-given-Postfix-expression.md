@@ -1,49 +1,71 @@
-# EX 1 You’re creating a health monitoring device which stores several sensor readings in an array. To determine the minimum value (e.g., lowest heartbeat), implement a recursive method.
-## DATE:25-03-2026
+# EX 1 Display operator precedence in the infix expression.
+## DATE: 25-03-2026
 ## AIM:
-To write a JAVA program To determine the minimum value (e.g., lowest heartbeat), implement a recursive method.
+To write a C program to find and display the priority of the operator in the given Postfix expression
 
 ## Algorithm
-1. Read the number of elements n and input all n integers into an array arr.
-2. Start the recursive function getMin(arr, 0, n) to find the minimum element.
-3. Inside the recursive function, check if the current index i is the last index (i      == n−1).If yes, return arr[i] as the minimum.
-4. Otherwise, recursively call getMin(arr, i+1, n) to find the minimum of the remaining elements.
-5. Compare the current element arr[i] with the minimum of the rest and return the smaller value.   
+1. Initialize a stack.
+
+2. Loop through each character of the Postfix expression.
+
+3. If the character is an operand, push it to the stack.
+
+4. If the character is an operator, pop two operands from the stack, apply the operator, and push the result back onto the stack.
+
+5. Display the precedence of the operator when it's encountered.
+
+6. The program should handle multiple operators with different precedence.
 
 ## Program:
 ```
 /*
-Program To determine the minimum value (e.g., lowest heartbeat), implement a recursive method.
+Program to find and display the priority of the operator in the given Postfix expression
 Developed by: Saileshkumar A
-RegisterNumber: 212222230126
-import java.util.*;
-
-public class Main {
-    static int getMin(int[] arr, int i, int n) 
-    {
-        
-        if (i == n - 1)
-            return arr[i];
-        
-        int minRest = getMin(arr, i + 1, n);
-        return Math.min(arr[i], minRest);
-        
+Register Number: 212222230126
+*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+int precedence(char op) {
+    if(op == '+' || op == '-') {
+        return 1;
+    } else if(op == '*' || op == '/') {
+        return 2;
+    } else if(op == '^') {
+        return 3;
     }
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int[] arr = new int[n];
-        for(int i=0; i<n; i++) {
-            arr[i] = sc.nextInt();
+    return -1; // Invalid operator
+}
+void evaluatePostfix(char* expression) {
+    int i = 0;
+    while (expression[i] != '\0') {
+        if (isdigit(expression[i])) {
+            // Operand, no action needed
+            i++;
+        } else if (expression[i] == '+' || expression[i] == '-' || expression[i] == '*' || expression[i] == '/' || expression[i] == '^') {
+            // Operator, display its precedence
+            printf("Operator: %c, Precedence: %d\n", expression[i], precedence(expression[i]));
+            i++;
+        } else {
+            printf("Invalid character encountered.\n");
+            return;
         }
-        System.out.println(getMin(arr, 0, n));
     }
+}
+int main() {
+    // Sample Postfix expression
+    char expression[] = "23*4+5^";
+    
+    printf("Postfix Expression: %s\n", expression);
+    evaluatePostfix(expression);
+
+    return 0;
 }
 ```
 
 ## Output:
-<img width="587" height="310" alt="image" src="https://github.com/user-attachments/assets/fe1cd3de-5a41-4781-b331-06ed7a8b6399" />
+![image](https://github.com/user-attachments/assets/98b5b3f0-d798-4190-8fbe-b32818c06571)
+
 
 ## Result:
-Thus the JAVA prograM ti find the minimum value (e.g., lowest heartbeat), implement a recursive method has implemented successfully
+Thus the C program to find and display the priority of the operator in the given Postfix expression is implemented successfully
